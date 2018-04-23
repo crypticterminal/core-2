@@ -23,22 +23,9 @@ namespace Test\legacy;
 
 use OC\NavigationManager;
 use OCP\App\AppNotFoundException;
+use function Test\AppFramework\rrmdir;
 use Test\TestCase;
 
-function rrmdir($directory) {
-	if (!file_exists($directory)) {
-		return false;
-	}
-	$files = array_diff(scandir($directory), ['.','..']);
-	foreach ($files as $file) {
-		if (is_dir($directory . '/' . $file)) {
-			rrmdir($directory . '/' . $file);
-		} else {
-			unlink($directory . '/' . $file);
-		}
-	}
-	return rmdir($directory);
-}
 
 class AppTest extends TestCase {
 

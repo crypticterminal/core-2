@@ -806,7 +806,6 @@ class OC_App {
 					$result = \OC::$server->getIntegrityCodeChecker()->verifyAppSignature($app, '', true);
 					if (empty($result)) {
 						$info['level'] = self::approvedApp;
-						$info['removable'] = false;
 					}
 
 					$info['internal'] = false;

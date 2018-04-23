@@ -581,7 +581,6 @@ class AppManager implements IAppManager {
 	 * @return string|false app id or false in case of error
 	 * @since 10.0
 	 * @throws \Exception
-	 * @throws \Exception
 	 */
 	public function installApp($package, $skipMigrations = false) {
 		$appId = Installer::installApp([
@@ -595,7 +594,6 @@ class AppManager implements IAppManager {
 	 * @param string $package
 	 * @return mixed
 	 * @since 10.0
-	 * @throws \Exception
 	 * @throws \Exception
 	 */
 	public function updateApp($package) {
@@ -618,8 +616,6 @@ class AppManager implements IAppManager {
 	/**
 	 * @param string $path
 	 * @return string[] app info
-	 * @throws \Exception
-	 * @throws \Exception
 	 * @throws \Exception
 	 */
 	public function readAppPackage($path) {

@@ -447,11 +447,6 @@ class OC_App {
 	 * @throws Exception
 	 */
 	public static function disable($app) {
-		// Convert OCS ID to regular application identifier
-		if(self::getInternalAppIdByOcs($app) !== false) {
-			$app = self::getInternalAppIdByOcs($app);
-		}
-
 		// flush
 		self::$enabledAppsCache = [];
 
@@ -864,21 +859,6 @@ class OC_App {
 		return $appList;
 	}
 
-	/**
-	 * Returns the internal app ID or false
-	 * @param string $ocsID
-	 * @return string|false
-	 */
-	public static function getInternalAppIdByOcs($ocsID) {
-		if(\is_numeric($ocsID)) {
-			$idArray = \OC::$server->getAppConfig()->getValues(false, 'ocsid');
-			if(\in_array($ocsID, $idArray, true)) {
-				return \array_search($ocsID, $idArray, true);
-			}
-		}
-		return false;
-	}
-
 	public static function shouldUpgrade($app) {
 		$versions = self::getAppVersions();
 		$info = \OC::$server->getAppManager()->getAppInfo($app);
@@ -1012,11 +992,6 @@ class OC_App {
 		self::setupBackgroundJobs($appData['background-jobs']);
 
 		//set remote/public handlers
-		if (\array_key_exists('ocsid', $appData)) {
-			\OC::$server->getConfig()->setAppValue($appId, 'ocsid', $appData['ocsid']);
-		} elseif(\OC::$server->getConfig()->getAppValue($appId, 'ocsid', null) !== null) {
-			\OC::$server->getConfig()->deleteAppValue($appId, 'ocsid');
-		}
 		foreach ($appData['remote'] as $name => $path) {
 			\OC::$server->getConfig()->setAppValue('core', "remote_$name", "$appId/$path");
 		}

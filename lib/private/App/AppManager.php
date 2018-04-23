@@ -485,15 +485,6 @@ class AppManager implements IAppManager {
 
 		$appId = \OC_App::cleanAppId($info['id']); // so we can fetch the right config value and cache correctly
 
-		// always use stored ocsid
-		// TODO remove? ocsid was used as identifier with the appstore. the marketplace uses the app name as id
-		if(isset($info['ocsid'])) {
-			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
-			if($storedId !== '' && $storedId !== $info['ocsid']) {
-				$info['ocsid'] = $storedId;
-			}
-		}
-
 		$cachedInfo = $info;
 		$cachedInfo['_cached'] = true;
 		$info['_cached'] = false;

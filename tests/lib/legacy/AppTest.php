@@ -220,31 +220,6 @@ class AppTest extends TestCase {
 		self::assertNull(\OC_App::getAppInfo('appinfotestapp'));
 	}
 
-	public function testGetAppInfoOCSIDReplacement() {
-
-		// the app was installed when it had a different ocsid
-		\OC::$server->getConfig()->setAppValue('appinfotestapp', 'ocsid', 'oldocsidfromdb');
-
-		// store info with ocsid
-		$infoXmlPath = "{$this->appPath}/appinfo/info.xml";
-		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
-			'<info>' .
-			'<id>appinfotestapp</id>' .
-			'<namespace>AppInfoTestApp</namespace>' .
-			'<ocsid>newid</ocsid>' .
-			'</info>';
-		file_put_contents($infoXmlPath, $xml);
-
-		$info = \OC_App::getAppInfo('appinfotestapp');
-		$this->assertEqualsAppInfo($info, ['ocsid' => 'oldocsidfromdb']);
-
-		// now it should be cached
-		$info2 = \OC_App::getAppInfo('appinfotestapp');
-		$this->assertEqualsAppInfo($info2, ['ocsid' => 'oldocsidfromdb']);
-
-		\OC::$server->getConfig()->deleteAppValue('appinfotestapp', 'ocsid');
-	}
-
 	/**
 	 * @expectedException \OCP\App\AppNotFoundException
 	 */

@@ -601,19 +601,6 @@ class OC_App {
 	}
 
 	/**
-	 * get app's version based on it's path
-	 *
-	 * @param string $path
-	 * @return string
-	 * @deprecated use \OC::$server->getAppManager()->getAppInfoByPath($path)
-	 */
-	public static function getAppVersionByPath($path) {
-		/** @var \OC\App\AppManager $am */
-		$am = \OC::$server->getAppManager();
-		return $am->getAppVersionByPath($path);
-	}
-
-	/**
 	 * Read all app metadata from the info.xml file
 	 *
 	 * @param string $appId id of the app or the path of the info.xml file

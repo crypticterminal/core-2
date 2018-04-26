@@ -31,6 +31,7 @@
 
 namespace OC\User;
 
+use OC\Files\Cache\Cache;
 use OC\Files\Cache\Storage;
 use OC\Hooks\Emitter;
 use OC_Helper;
@@ -210,6 +211,15 @@ class User implements IUser {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'preDelete', [$this]);
 		}
+
+		// Delete the users entry in the storage table
+		try {
+			$homeStorage = \OC::$server->getUserFolder($this->getUID())->getStorage();
+			Storage::remove($homeStorage->getId());
+		} catch (NoUserException $ex) {
+
+		}
+
 		// get the home now because it won't return it after user deletion
 		$homePath = $this->getHome();
 		$this->mapper->delete($this->account);
@@ -233,9 +243,6 @@ class User implements IUser {
 			// also this is not testable/mockable...
 			\OC_Helper::rmdirr($homePath);
 		}
-
-		// Delete the users entry in the storage table
-		Storage::remove('home::' . $this->getUID());
 
 		\OC::$server->getCommentsManager()->deleteReferencesOfActor('users', $this->getUID());
 		\OC::$server->getCommentsManager()->deleteReadMarksFromUser($this);
